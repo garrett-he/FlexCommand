@@ -1,3 +1,5 @@
+![FlexCommand Logo](./images/flexcommand-logo.png)
+
 # FlexCommand
 
 An add-on providing essential mechanisms to let players customize various things
