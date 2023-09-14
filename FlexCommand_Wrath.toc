@@ -1,0 +1,5 @@
+## Interface: 30403
+## Title: FlexCommand
+## Notes: The platform providing essential mechanisms for multiple purposed extensions.
+## Author: Garrett HE <garrett.he@outlook.com>
+## Version: @project-version@
