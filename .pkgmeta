@@ -1,0 +1,4 @@
+package-as: FlexCommand
+ignore:
+  - spec
+  - Makefile
