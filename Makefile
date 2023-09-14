@@ -7,3 +7,7 @@ help: ## Show help information
 .PHONY: test
 test: ## Run tests
 	busted
+
+.PHONY: build
+build: ## Build project
+	packager
