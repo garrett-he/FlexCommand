@@ -5,6 +5,8 @@ local FlexCommand = {}
 loadlib(FlexCommand, "command")
 
 describe("FlexCommand.command module", function()
+    local registeredCommands = FlexCommand.command.GetAllRegisteredCommands()
+
     describe("ParseCommand() function", function()
         it("should parse and return command name and arguments.", function()
             local command, args = FlexCommand.command.ParseCommand("cmd1")
@@ -27,6 +29,44 @@ describe("FlexCommand.command module", function()
             assert.are_equal("not-quoted", args["key7"])
             assert.is_nil(args["key8"])
             assert.is_nil(args["key9"])
+        end)
+    end)
+
+    describe("RegisterCommand() function", function()
+        it("should be able to register commands.", function()
+            local help = "help info"
+            local handler = function()
+            end
+
+            assert.is_nil(registeredCommands["cmd"])
+            FlexCommand.command.RegisterCommand("cmd", help, handler)
+
+            assert.are_equal(help, registeredCommands["cmd"]["help"])
+            assert.are_equal(handler, registeredCommands["cmd"]["handler"])
+        end)
+
+        it("should raise an error if command already registered.", function()
+            assert.is_not_nil(registeredCommands["cmd"])
+            assert.has_error(function()
+                FlexCommand.command.RegisterCommand("cmd", {})
+            end, "Command 'cmd' already registered.")
+        end)
+    end)
+
+    describe("UnregisterCommand() function", function()
+        it("should be able to unregister commands.", function()
+            assert.is_not_nil(registeredCommands["cmd"])
+
+            FlexCommand.command.UnregisterCommand("cmd")
+            assert.is_nil(registeredCommands["cmd"])
+        end)
+
+        it("should raise an error if command not registered yet.", function()
+            assert.is_nil(registeredCommands["cmd"])
+
+            assert.has_error(function()
+                FlexCommand.command.UnregisterCommand("cmd")
+            end, "Command 'cmd' not registered yet.")
         end)
     end)
 end)
