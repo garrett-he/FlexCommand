@@ -29,4 +29,44 @@ describe("FlexCommand.command module", function()
             assert.is_nil(args["key9"])
         end)
     end)
+
+    local registeredCommands = FlexCommand.command.GetAllRegisteredCommands()
+
+    describe("RegisterCommand() function", function()
+        it("should be able to register commands.", function()
+            local help = "help info"
+            local handler = function()
+            end
+
+            assert.is_nil(registeredCommands["cmd"])
+            FlexCommand.command.RegisterCommand("cmd", help, handler)
+
+            assert.are_equal(help, registeredCommands["cmd"]["help"])
+            assert.are_equal(handler, registeredCommands["cmd"]["handler"])
+        end)
+
+        it("should raise an error if command already registered.", function()
+            assert.is_not_nil(registeredCommands["cmd"])
+            assert.has_error(function()
+                FlexCommand.command.RegisterCommand("cmd", {})
+            end, "Command 'cmd' already registered.")
+        end)
+    end)
+
+    describe("UnregisterCommand() function", function()
+        it("should be able to unregister commands.", function()
+            assert.is_not_nil(registeredCommands["cmd"])
+
+            FlexCommand.command.UnregisterCommand("cmd")
+            assert.is_nil(registeredCommands["cmd"])
+        end)
+
+        it("should raise an error if command not registered yet.", function()
+            assert.is_nil(registeredCommands["cmd"])
+
+            assert.has_error(function()
+                FlexCommand.command.UnregisterCommand("cmd")
+            end, "Command 'cmd' not registered yet.")
+        end)
+    end)
 end)
