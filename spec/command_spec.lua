@@ -69,4 +69,31 @@ describe("FlexCommand.command module", function()
             end, "Command 'cmd' not registered yet.")
         end)
     end)
+
+    describe("ExecuteCommand() function", function()
+        it("should raise an error if command not registered.", function()
+            assert.has_error(function()
+                FlexCommand.command.ExecuteCommand("non-existing-cmd")
+            end, "Command 'non-existing-cmd' not registered yet.")
+        end)
+
+        it("should execute commands with arguments.", function()
+            local spec = {
+                handler = function()
+                    return true
+                end
+            }
+
+            spy.on(spec, "handler")
+
+            FlexCommand.command.RegisterCommand("cmd", "test command", spec.handler)
+
+            local command, args = FlexCommand.command.ParseCommand("cmd key1=value1")
+
+            assert.is_true(FlexCommand.command.ExecuteCommand(command, args))
+            assert.spy(spec.handler).was_called_with({ key1 = "value1" })
+
+            FlexCommand.command.UnregisterCommand("cmd")
+        end)
+    end)
 end)

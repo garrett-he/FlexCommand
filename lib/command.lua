@@ -60,3 +60,13 @@ FlexCommand.command.UnregisterCommand = function(command)
 
     registeredCommands[command] = nil
 end
+
+FlexCommand.command.ExecuteCommand = function(command, args, ...)
+    local spec = registeredCommands[command]
+
+    if not spec then
+        error(string.format("Command '%s' not registered yet.", command))
+    end
+
+    return spec["handler"](args, ...)
+end
