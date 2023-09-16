@@ -5,3 +5,6 @@
 ## Version: @project-version@
 
 lib\command.lua
+etc\api.lua
+etc\commands.lua
+main.lua
