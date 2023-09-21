@@ -6,6 +6,7 @@
 ## SavedVariablesPerCharacter: FlexCommandConfig
 
 lib\config.lua
+lib\logging.lua
 lib\command.lua
 etc\api.lua
 etc\commands.lua
