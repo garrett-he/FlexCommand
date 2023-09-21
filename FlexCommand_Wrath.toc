@@ -3,7 +3,9 @@
 ## Notes: The platform providing essential mechanisms for multiple purposed extensions.
 ## Author: Garrett HE <garrett.he@outlook.com>
 ## Version: @project-version@
+## SavedVariablesPerCharacter: FlexCommandConfig
 
+lib\config.lua
 lib\command.lua
 etc\api.lua
 etc\commands.lua
