@@ -8,3 +8,12 @@
 ## Author: Garrett HE <garrett.he@outlook.com>
 ## Version: @project-version@
 ## SavedVariablesPerCharacter: FlexCommandConfig
+
+lib\config.lua
+lib\command.lua
+lib\event.lua
+lib\logging.lua
+lib\profile.lua
+etc\api.lua
+etc\commands.lua
+main.lua
