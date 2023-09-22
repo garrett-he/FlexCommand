@@ -70,3 +70,7 @@ FlexCommand.command.ExecuteCommand = function(command, args, ...)
 
     return spec["handler"](args, ...)
 end
+
+FlexCommand.command.ExecuteString = function(str)
+    FlexCommand.command.ExecuteCommand(FlexCommand.command.ParseCommand(str))
+end
