@@ -8,6 +8,7 @@
 lib\config.lua
 lib\logging.lua
 lib\command.lua
+lib\profile.lua
 etc\api.lua
 etc\commands.lua
 main.lua
