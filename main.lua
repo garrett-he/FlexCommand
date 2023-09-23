@@ -9,3 +9,13 @@ SlashCmdList["FLEXCOMMAND"] = function(str)
 
     FC_ExecuteString(str)
 end
+
+local frame = CreateFrame("Frame")
+frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+
+frame:SetScript("OnEvent", function(_, _, isInitialLogin, isReloadingUi, ...)
+    if isInitialLogin or isReloadingUi then
+        local logger = FC_CreateLogger(FC_GetConfig("logLevel", 3))
+        FC_SetDefaultLogger(logger)
+    end
+end)
