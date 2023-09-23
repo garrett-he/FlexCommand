@@ -10,6 +10,7 @@ FlexCommand.profile.RegisterProfile = function(name, profile)
         error(string.format("Profile '%s' already exists.", name))
     end
 
+    profile["__loaded"] = false
     registeredProfiles[name] = profile
 end
 
@@ -23,4 +24,22 @@ end
 
 FlexCommand.profile.GetAllRegisteredProfiles = function()
     return registeredProfiles
+end
+
+FlexCommand.profile.LoadProfile = function(name, force)
+    local profile = registeredProfiles[name]
+
+    if not profile then
+        error(string.format("Profile '%s' not registered yet.", name))
+    end
+
+    if profile["commands"] then
+        for _, str in ipairs(profile["commands"]) do
+            FlexCommand.command.ExecuteString(str)
+        end
+    end
+
+    profile["__loaded"] = true
+
+    FlexCommand.logging.PrintInfo("Profile '%s' loaded.", name)
 end
