@@ -18,3 +18,9 @@ FC_PrintError = FlexCommand.logging.PrintError
 FC_PrintWarning = FlexCommand.logging.PrintWarning
 FC_PrintInfo = FlexCommand.logging.PrintInfo
 FC_PrintDebug = FlexCommand.logging.PrintDebug
+
+-- FlexCommand.profile module
+FC_RegisterProfile = FlexCommand.profile.RegisterProfile
+FC_UnregisterProfile = FlexCommand.profile.UnregisterProfile
+FC_GetAllRegisteredProfiles = FlexCommand.profile.GetAllRegisteredProfiles
+FC_LoadProfile = FlexCommand.profile.LoadProfile
