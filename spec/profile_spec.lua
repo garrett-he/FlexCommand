@@ -37,4 +37,27 @@ describe("FlexCommand.profile module", function()
             end, "Profile 'non-existing-profile' not registered yet.")
         end)
     end)
+
+    FlexCommand.logging = {}
+
+    FlexCommand.command = {}
+
+    stub(FlexCommand.logging, "PrintInfo")
+    stub(FlexCommand.command, "ExecuteString")
+
+    describe("LoadProfile() function", function()
+        it("should execute commands in profile.", function()
+            FlexCommand.profile.RegisterProfile("test-profile2", {
+                commands = {
+                    "command1",
+                    "command2"
+                }
+            })
+
+            FlexCommand.profile.LoadProfile("test-profile2")
+
+            assert.stub(FlexCommand.command.ExecuteString).was_called_with("command1")
+            assert.stub(FlexCommand.command.ExecuteString).was_called_with("command2")
+        end)
+    end)
 end)
