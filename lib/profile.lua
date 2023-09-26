@@ -33,6 +33,10 @@ FlexCommand.profile.LoadProfile = function(name, force)
         error(string.format("Profile '%s' not registered yet.", name))
     end
 
+    if profile["__loaded"] then
+        return
+    end
+
     if profile["commands"] then
         for _, str in ipairs(profile["commands"]) do
             FlexCommand.command.ExecuteString(str)
