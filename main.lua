@@ -17,5 +17,13 @@ frame:SetScript("OnEvent", function(_, _, isInitialLogin, isReloadingUi, ...)
     if isInitialLogin or isReloadingUi then
         local logger = FC_CreateLogger(FC_GetConfig("logLevel", 3))
         FC_SetDefaultLogger(logger)
+
+        local profiles = FC_GetAllRegisteredProfiles()
+
+        for name, profile in pairs(profiles) do
+            if profile["autoload"] then
+                FC_LoadProfile(name)
+            end
+        end
     end
 end)
