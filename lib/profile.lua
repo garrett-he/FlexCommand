@@ -5,6 +5,9 @@ FlexCommand.profile = {}
 -- Registered profiles
 local registeredProfiles = {}
 
+-- Profile filters
+local profileFilters = {}
+
 FlexCommand.profile.RegisterProfile = function(name, profile)
     if registeredProfiles[name] then
         error(string.format("Profile '%s' already exists.", name))
@@ -37,6 +40,10 @@ FlexCommand.profile.LoadProfile = function(name, force)
         return
     end
 
+    if not force and not FlexCommand.profile.CheckFilters(profile["filters"]) then
+        return
+    end
+
     if profile["commands"] then
         for _, str in ipairs(profile["commands"]) do
             FlexCommand.command.ExecuteString(str)
@@ -46,4 +53,30 @@ FlexCommand.profile.LoadProfile = function(name, force)
     profile["__loaded"] = true
 
     FlexCommand.logging.PrintInfo("Profile '%s' loaded.", name)
+end
+
+FlexCommand.profile.RegisterFilter = function(name, handler)
+    if profileFilters[name] then
+        error(string.format("Profile filter '%s' already registered.", name))
+    end
+
+    profileFilters[name] = handler
+end
+
+FlexCommand.profile.CheckFilters = function(filters)
+    if not filters then
+        return true
+    end
+
+    local result = true
+
+    for name, args in pairs(filters) do
+        if not profileFilters[name] then
+            error(string.format("Profile filter '%s' not registered yet.", name))
+        end
+
+        result = result and profileFilters[name](args)
+    end
+
+    return result and true
 end

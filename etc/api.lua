@@ -24,3 +24,4 @@ FC_RegisterProfile = FlexCommand.profile.RegisterProfile
 FC_UnregisterProfile = FlexCommand.profile.UnregisterProfile
 FC_GetAllRegisteredProfiles = FlexCommand.profile.GetAllRegisteredProfiles
 FC_LoadProfile = FlexCommand.profile.LoadProfile
+FC_RegisterProfileFilter = FlexCommand.profile.RegisterFilter

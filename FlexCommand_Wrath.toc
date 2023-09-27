@@ -11,4 +11,5 @@ lib\command.lua
 lib\profile.lua
 etc\api.lua
 etc\commands.lua
+etc\profile_filters.lua
 main.lua
