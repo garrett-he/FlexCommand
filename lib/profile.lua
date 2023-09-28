@@ -44,6 +44,12 @@ FlexCommand.profile.LoadProfile = function(name, force)
         return
     end
 
+    if profile["preload"] then
+        for _, preload in pairs(profile["preload"]) do
+            FlexCommand.profile.LoadProfile(preload, force)
+        end
+    end
+
     if profile["commands"] then
         for _, str in ipairs(profile["commands"]) do
             FlexCommand.command.ExecuteString(str)
