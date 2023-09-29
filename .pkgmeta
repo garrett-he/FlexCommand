@@ -1,4 +1,5 @@
 package-as: FlexCommand
+enable-toc-creation: yes
 ignore:
   - spec
   - Makefile
