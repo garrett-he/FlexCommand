@@ -15,3 +15,19 @@ end)
 FC_RegisterCommand("profile-load", "Load the specified profile", function(args)
     FC_LoadProfile(args["name"])
 end)
+
+FC_RegisterCommand("config-get", "Get configuration value by key", function(args)
+    local key = args["key"]
+    local value = FC_GetConfig(key)
+
+    if value == nil then
+        FC_PrintError("Configuration with key '%s' not assigned yet.", key)
+        return
+    end
+
+    FC_PrintInfo("Configuration: %s = %s", key, value)
+end)
+
+FC_RegisterCommand("config-set", "Set configuration value by key", function(args)
+    FC_SetConfig(args["key"], args["value"])
+end)
