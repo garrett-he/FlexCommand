@@ -74,11 +74,32 @@ FlexCommand.command.ExecuteCommand = function(command, args, ...)
         error(string.format("Command '%s' not registered yet.", command))
     end
 
-    return spec["handler"](args, ...)
+    if not args["if"] then
+        return spec["handler"](args, event, ...)
+    end
+
+    local result = { value = false }
+    local chunk = loadstring("local result = ...; result.value = (" .. args["if"] .. ")")
+
+    if not chunk then
+        error(string.format("Invalid condition expression '%s'.", args["if"]))
+    end
+
+    chunk(result)
+
+    if result.value then
+        return spec["handler"](args, event, ...)
+    end
 end
 
 FlexCommand.command.ExecuteString = function(str)
-    FlexCommand.command.ExecuteCommand(FlexCommand.command.ParseCommand(str))
+    local command, args = FlexCommand.command.ParseCommand(str)
+
+    if not args["on"] then
+        return FlexCommand.command.ExecuteCommand(command, args, nil)
+    end
+
+    return FlexCommand.command.RegisterCommandTrigger(args["on"], command, args)
 end
 
 FlexCommand.command.RegisterCommandTrigger = function(event, command, args)
