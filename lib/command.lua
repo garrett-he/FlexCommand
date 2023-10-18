@@ -5,6 +5,12 @@ FlexCommand.command = {}
 -- Registered commands
 local registeredCommands = {}
 
+-- Command triggers
+local commandTriggers = {}
+
+-- Trigger listener
+local triggerListener
+
 FlexCommand.command.ParseCommand = function(str)
     local command, substr = string.match(str, "^%s*([^ ]+)%s*(.*)")
     local args = {}
@@ -73,4 +79,29 @@ end
 
 FlexCommand.command.ExecuteString = function(str)
     FlexCommand.command.ExecuteCommand(FlexCommand.command.ParseCommand(str))
+end
+
+FlexCommand.command.RegisterCommandTrigger = function(event, command, args)
+    if not commandTriggers[event] then
+        commandTriggers[event] = {}
+        triggerListener:RegisterEvent(event)
+    end
+
+    table.insert(commandTriggers[event], { command, args })
+end
+
+FlexCommand.command.InitTriggerListener = function()
+    -- Frame to register events for commands
+    triggerListener = CreateFrame("Frame")
+
+    triggerListener:SetScript("OnEvent", function(_, event, ...)
+        if commandTriggers[event] then
+            for i = 1, #commandTriggers[event] do
+                local command, args = unpack(commandTriggers[event][i])
+                if FlexCommand.command.ExecuteCommand(command, args, event, ...) == false then
+                    return false
+                end
+            end
+        end
+    end)
 end
