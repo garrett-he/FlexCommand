@@ -16,6 +16,7 @@ lib\logging.lua
 lib\command.lua
 lib\profile.lua
 etc\api.lua
+etc\events.lua
 etc\commands.lua
 etc\profile_filters.lua
 main.lua
