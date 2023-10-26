@@ -91,7 +91,7 @@ describe("FlexCommand.command module", function()
             local command, args = FlexCommand.command.ParseCommand("cmd key1=value1")
 
             assert.is_true(FlexCommand.command.ExecuteCommand(command, args))
-            assert.spy(spec.handler).was_called_with({ key1 = "value1" })
+            assert.spy(spec.handler).was_called_with({ key1 = "value1" }, nil)
 
             FlexCommand.command.UnregisterCommand("cmd")
         end)
