@@ -10,6 +10,7 @@
 ## IconTexture: Interface\AddOns\FlexCommand\images\flexcommand-icon
 ## SavedVariablesPerCharacter: FlexCommandConfig
 
+lib\error.lua
 lib\config.lua
 lib\logging.lua
 lib\command.lua

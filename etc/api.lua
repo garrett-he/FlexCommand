@@ -1,5 +1,9 @@
 local _, FlexCommand = ...
 
+-- FlexCommand.error module
+FC_GetLastError = FlexCommand.error.GetLastError
+FC_SetLastError = FlexCommand.error.SetLastError
+
 -- FlexCommand.config module
 FC_GetConfig = FlexCommand.config.GetConfig
 FC_SetConfig = FlexCommand.config.SetConfig
