@@ -1,11 +1,14 @@
 local _, FlexCommand = ...
 
-FC_RegisterEvent("ERROR", function(text, ...)
+FC_RegisterEvent("FC_ERROR", function(text, ...)
     FC_PrintError(text, ...)
-    error(string.format(text, ...))
+
+    local msg = string.format(text, ...)
+    FlexCommand.error.SetLastError(msg)
+    error(msg)
 end)
 
-FC_RegisterEvent("COMMAND_EXECUTE", function(command, args, spec, ...)
+FC_RegisterEvent("FC_COMMAND_EXECUTE", function(command, args, spec, ...)
     if not args["if"] then
         return true
     end
@@ -23,6 +26,6 @@ FC_RegisterEvent("COMMAND_EXECUTE", function(command, args, spec, ...)
     return result.value
 end)
 
-FC_RegisterEvent("PROFILE_LOAD", function(profile)
+FC_RegisterEvent("FC_PROFILE_LOAD", function(profile)
     return FlexCommand.profile.CheckFilters(profile["filters"])
 end)

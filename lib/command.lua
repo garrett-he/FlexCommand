@@ -50,7 +50,7 @@ end
 
 FlexCommand.command.RegisterCommand = function(command, help, handler)
     if registeredCommands[command] then
-        error(string.format("Command '%s' already registered.", command))
+        FlexCommand.event.RaiseEvent("FC_ERROR", "Command '%s' already registered.", command)
     end
 
     registeredCommands[command] = {
@@ -61,7 +61,7 @@ end
 
 FlexCommand.command.UnregisterCommand = function(command)
     if not registeredCommands[command] then
-        error(string.format("Command '%s' not registered yet.", command))
+        FlexCommand.event.RaiseEvent("FC_ERROR", "Command '%s' not registered yet.", command)
     end
 
     registeredCommands[command] = nil
@@ -71,24 +71,11 @@ FlexCommand.command.ExecuteCommand = function(command, args, ...)
     local spec = registeredCommands[command]
 
     if not spec then
-        error(string.format("Command '%s' not registered yet.", command))
+        FlexCommand.event.RaiseEvent("FC_ERROR", "Command '%s' not registered yet.", command)
     end
 
-    if not args["if"] then
-        return spec["handler"](args, event, ...)
-    end
-
-    local result = { value = false }
-    local chunk = loadstring("local result = ...; result.value = (" .. args["if"] .. ")")
-
-    if not chunk then
-        error(string.format("Invalid condition expression '%s'.", args["if"]))
-    end
-
-    chunk(result)
-
-    if result.value then
-        return spec["handler"](args, event, ...)
+    if FlexCommand.event.RaiseEvent("FC_COMMAND_EXECUTE", command, args, spec, ...) then
+        return spec["handler"](args)
     end
 end
 

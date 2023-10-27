@@ -10,7 +10,7 @@ local profileFilters = {}
 
 FlexCommand.profile.RegisterProfile = function(name, profile)
     if registeredProfiles[name] then
-        error(string.format("Profile '%s' already exists.", name))
+        FlexCommand.event.RaiseEvent("FC_ERROR", "Profile '%s' already exists.", name)
     end
 
     profile["__loaded"] = false
@@ -19,7 +19,7 @@ end
 
 FlexCommand.profile.UnregisterProfile = function(name)
     if not registeredProfiles[name] then
-        error(string.format("Profile '%s' not registered yet.", name))
+        FlexCommand.event.RaiseEvent("FC_ERROR", "Profile '%s' not registered yet.", name)
     end
 
     registeredProfiles[name] = nil
@@ -33,14 +33,14 @@ FlexCommand.profile.LoadProfile = function(name, force)
     local profile = registeredProfiles[name]
 
     if not profile then
-        error(string.format("Profile '%s' not registered yet.", name))
+        FlexCommand.event.RaiseEvent("FC_ERROR", "Profile '%s' not registered yet.", name)
     end
 
     if profile["__loaded"] then
         return
     end
 
-    if not force and not FlexCommand.profile.CheckFilters(profile["filters"]) then
+    if not (force or FlexCommand.event.RaiseEvent("FC_PROFILE_LOAD", profile)) then
         return
     end
 
@@ -63,7 +63,7 @@ end
 
 FlexCommand.profile.RegisterFilter = function(name, handler)
     if profileFilters[name] then
-        error(string.format("Profile filter '%s' already registered.", name))
+        FlexCommand.event.RaiseEvent("FC_ERROR", "Profile filter '%s' already registered.", name)
     end
 
     profileFilters[name] = handler
@@ -78,7 +78,7 @@ FlexCommand.profile.CheckFilters = function(filters)
 
     for name, args in pairs(filters) do
         if not profileFilters[name] then
-            error(string.format("Profile filter '%s' not registered yet.", name))
+            FlexCommand.event.RaiseEvent("FC_ERROR", "Profile filter '%s' not registered yet.", name)
         end
 
         result = result and profileFilters[name](args)
